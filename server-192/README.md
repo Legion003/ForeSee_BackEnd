@@ -8,20 +8,20 @@
 
 ```lua
 ├── server-192
-    ├── src
-        ├── main
-            ├── java  -- java源文件
-                ├── com.ForeSee.ForeSee
-                    ├── controller  -- 接收触发模块发过来的请求
+	├── src
+		├── main
+			├── java  -- java源文件
+				├── com.ForeSee.ForeSee
+					├── controller  -- 接收触发模块发过来的请求
 					├── config  -- 配置
 					├── dao  -- 数据访问
 					├── service  -- 业务逻辑
-                    ├── ServerMain.java  -- 启动类
-            ├── resource  -- 其他文件
-                ├── application.yml  -- 主配置文件，用于指定使用哪个配置文件
-                ├── application-dev.yml  -- 开发环境配置文件
-                ├── application-prod.yml  -- 生产环境配置文件
-        ├── test  -- 测试文件
+					├── ServerMain.java  -- 启动类
+			├── resource  -- 其他文件
+				├── application.yml  -- 主配置文件，用于指定使用哪个配置文件
+				├── application-dev.yml  -- 开发环境配置文件
+				├── application-prod.yml  -- 生产环境配置文件
+		├── test  -- 测试文件
 	├── pom.xml  -- Maven依赖文件
 ```
 
