@@ -2,12 +2,12 @@
 server:
   port: 8287
 
-spring:
-  data:
-    mongodb:
-      custom:
-        host: localhost
-        port: 27017
-        database: mydb
-        connections-per-host: 10
-        min-connections-per-host: 3
+#spring:
+#  data:
+#    mongodb:
+#      custom:
+#        host: localhost
+#        port: 27017
+#        database: mydb
+#        connections-per-host: 10
+#        min-connections-per-host: 3
