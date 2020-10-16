@@ -13,11 +13,21 @@ public class InfoController {
     @Autowired
     InfoService infoService;
 
+    /**
+     * 根据关键词检索内容
+     * @param query 关键词
+     * @return
+     */
     @GetMapping("/companyInfo/{query}")
     public String getCompanyInfo(@PathVariable("query")String query){
         return infoService.getCompanyInfo(query);
     }
 
+    /**
+     * 检索某个公司的所有相关信息
+     * @param stockCode 公司代码
+     * @return
+     */
     @GetMapping("/allInfo/{stockCode}")
     public String getAllInfo(@PathVariable("stockCode")String stockCode){
         return infoService.getAllInfo(stockCode);

@@ -12,6 +12,11 @@ public class InfoService {
     @Autowired
     MongodbDao mongodbDao;
 
+    /**
+     * 先将检索词传给redis，让redis找出这个公司的代号，再用mongodb查出他的信息
+     * @param query 检索词
+     * @return
+     */
     public String getCompanyInfo(String query){
         // redis方法
         String stockCode = null;
@@ -20,6 +25,11 @@ public class InfoService {
         return companyInfo;
     }
 
+    /**
+     * 根据公司的代号检索mongodb，查出它的所有信息，包括基本信息、news、notice
+     * @param stockCode 公司代号
+     * @return
+     */
     public String getAllInfo(String stockCode){
         StringBuffer sb = new StringBuffer("{\"companyInfo\":");
         String companyInfo = mongodbDao.getCompanyInfo(stockCode);

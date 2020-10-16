@@ -7,7 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MongoConn {
-
+    /**
+     * @return Mongodb的连接
+     */
     public static MongoDatabase getConn(){
         MongoDatabase mongoDatabase = null;
         MongoClient mongoClient = null;

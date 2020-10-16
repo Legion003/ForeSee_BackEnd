@@ -4,6 +4,7 @@ server:
   servlet:
     context-path: /ForeSee
 
+# 写shutdown文件用的东西
 management:
   endpoint:
     shutdown:
