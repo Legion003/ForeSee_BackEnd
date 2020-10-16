@@ -1,5 +1,6 @@
 package com.ForeSee.ForeSee.dao;
 
+import com.ForeSee.ForeSee.util.JedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -21,6 +22,8 @@ import java.util.List;
 @Component
 public class RedisDao {
 
+    @Autowired
+    JedisUtil jedisUtil;
 //    根据stockname得到stockcode
 //    public static String getCodeByStockcode(String stockcode)
 //    {
@@ -54,82 +57,30 @@ public class RedisDao {
 //        else return null;
 //    }
 
-    //一框式检索，根据stockcode、stockname、companyname的检索统一返回stockcode
+    /**
+     * 一框式检索，根据stockcode、stockname、companyname的检索统一返回stockcode
+     * @param query
+     * @return stockcode
+     */
     public String getStockcode(String query)
     {
         query=query.replaceAll(" ","");
-        Jedis jedis = new Jedis("192.168.1.108",6479);
-        jedis.auth("nopassword");
+        String stockCode = "";
+        Jedis jedis= jedisUtil.getClient();
         jedis.select(2);
         if(jedis.sismember("stockcode",query)){
-            return query;
+            log.info("query是stockcode类型，redis返回"+query);
+            stockCode = query;
+        }else if(jedis.exists(query)){
+            stockCode = jedis.get(query);
+            log.info("redis使用"+query+"获取到stockcode:"+stockCode);
+        }else{
+            log.info("redis没有查到stockcode");
         }
-        else if(jedis.exists(query)){
-            return jedis.get(query);
-        }
-        else{
-            return null;
-        }
+        jedis.close();
+        return stockCode;
 
     }
-//    @Autowired
-//    private StringRedisTemplate redisTemplate;
-//
-//    static int pagecount=20;
-//    /**
-//     * 查询首页的id
-//     * @param query 检索词
-//     * @return keys
-//     */
-////    @Cacheable(value = "bw_id", key = "#query")
-//    public List<String> getIDList(String query) {
-//        List<String> keys = new ArrayList<String>();
-//        try {
-//            if (redisTemplate.hasKey(query)) {
-//                log.info("使用redis查询query返回idList");
-//                keys.addAll(redisTemplate.opsForZSet().reverseRange(query,0,19));
-//            } else {
-//                log.info("redis没有找到query");
-//            }
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//        }
-//        return keys;
-//    }
-//
-//    /**
-//     * 根据页码查询id
-//     * @param query 检索词
-//     * @param page 页码
-//     * @return keys
-//     */
-//    public List<String> getIDListOnPage(String query, int page) {
-//        int start = (page - 1 ) * pagecount;
-//        int end = start + page - 1;
-//        List<String> keys = new ArrayList<String>();
-//        try {
-//            if (redisTemplate.hasKey(query)) {
-//                log.info("使用redis查询query返回idList");
-//                keys.addAll(redisTemplate.opsForZSet().reverseRange(query,start,end));
-//            } else {
-//                log.info("redis没有找到query");
-//            }
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//        }
-//        return keys;
-//    }
-//
-//    /**
-//     * 返回页码总数
-//     * @param query 检索词
-//     * @return page
-//     */
-//    public long getPageNumber(String query)
-//    {
-//        long num = redisTemplate.opsForZSet().zCard(query);
-//        long page = num/pagecount + 1;
-//        return page;
-//    }
+
 
 }
