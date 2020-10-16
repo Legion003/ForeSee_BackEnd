@@ -3,3 +3,16 @@ server:
   port: 8288
   servlet:
     context-path: /ForeSee
+
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: *
+      base-path: /MyActuator
+  server:
+    port: 12581
+    address: 127.0.0.1
