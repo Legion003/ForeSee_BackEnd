@@ -1,6 +1,7 @@
 package com.ForeSee.ForeSee.service;
 
 import com.ForeSee.ForeSee.dao.MongodbDao;
+import com.ForeSee.ForeSee.dao.RedisDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,8 @@ import java.util.List;
 public class InfoService {
     @Autowired
     MongodbDao mongodbDao;
-
+    @Autowired
+    RedisDao redisDao;
     /**
      * 先将检索词传给redis，让redis找出这个公司的代号，再用mongodb查出他的信息
      * @param query 检索词
@@ -19,7 +21,7 @@ public class InfoService {
      */
     public String getCompanyInfo(String query){
         // redis方法
-        String stockCode = RedisDao.getStockcode(query);
+        String stockCode = redisDao.getStockcode(query);
         // mongodb方法
         String companyInfo = mongodbDao.getCompanyInfo(stockCode);
         return companyInfo;

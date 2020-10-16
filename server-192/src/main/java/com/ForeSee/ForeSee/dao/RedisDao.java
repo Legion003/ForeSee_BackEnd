@@ -55,18 +55,22 @@ public class RedisDao {
 //    }
 
     //一框式检索，根据stockcode、stockname、companyname的检索统一返回stockcode
-    public static String getStockcode(String query)
+    public String getStockcode(String query)
     {
         query=query.replaceAll(" ","");
         Jedis jedis = new Jedis("192.168.1.108",6479);
         jedis.auth("nopassword");
         jedis.select(2);
-        if(jedis.sismember("stockcode",query))
+        if(jedis.sismember("stockcode",query)){
             return query;
-        else if(jedis.exists(query))
+        }
+        else if(jedis.exists(query)){
             return jedis.get(query);
-        else
+        }
+        else{
             return null;
+        }
+
     }
 //    @Autowired
 //    private StringRedisTemplate redisTemplate;
