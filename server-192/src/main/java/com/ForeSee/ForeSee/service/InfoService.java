@@ -19,7 +19,7 @@ public class InfoService {
      */
     public String getCompanyInfo(String query){
         // redis方法
-        String stockCode = null;
+        String stockCode = RedisDao.getStockcode(query);
         // mongodb方法
         String companyInfo = mongodbDao.getCompanyInfo(stockCode);
         return companyInfo;
