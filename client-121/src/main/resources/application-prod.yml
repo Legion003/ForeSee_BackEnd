@@ -4,6 +4,9 @@ server:
   servlet:
     context-path: /ForeSee
 
+# 发送给服务端的根url
+httpUrl: http://222.200.184.74:7236/ForeSee
+
 # 写shutdown文件用的东西
 management:
   endpoint:

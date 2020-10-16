@@ -36,6 +36,9 @@ public class InfoService {
         StringBuffer sb = new StringBuffer("{\"companyInfo\":");
         String companyInfo = mongodbDao.getCompanyInfo(stockCode);
         companyInfo = companyInfo.substring(1,companyInfo.length()-1);
+        if(companyInfo.length()==0){
+            companyInfo = "{}";
+        }
         sb.append(companyInfo);
         sb.append(",\"news\":");
         sb.append(mongodbDao.getStockNews(stockCode));
