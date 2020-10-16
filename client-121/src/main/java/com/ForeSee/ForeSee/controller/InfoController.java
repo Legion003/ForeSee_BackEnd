@@ -13,13 +13,13 @@ public class InfoController {
 
     @GetMapping("/companyInfo/{query}")
     public String getCompanyInfo(@PathVariable("query")String query){
-        String url = "http://localhost:8287/companyInfo/"+query;
+        String url = "http://222.200.184.74:8288/companyInfo/"+query;
         return restTemplate.getForObject(url, String.class);
     }
 
     @GetMapping("/allInfo/{stockCode}")
     public String getAllInfo(@PathVariable("stockCode")String stockCode){
-        String url = "http://localhost:8287/allInfo/"+stockCode;
+        String url = "http://222.200.184.74:8288/allInfo/"+stockCode;
         return restTemplate.getForObject(url, String.class);
     }
 }
