@@ -15,7 +15,7 @@ public class MongoConn {
         MongoClient mongoClient = null;
         try{
             mongoClient = new MongoClient("localhost",27017);
-            mongoDatabase = mongoClient.getDatabase("mydb");
+            mongoDatabase = mongoClient.getDatabase("foreSeeTest");
         }catch (Exception e){
             log.error(e.getClass().getName()+": "+e.getMessage());
         }

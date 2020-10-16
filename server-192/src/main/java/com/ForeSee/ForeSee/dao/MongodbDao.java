@@ -35,7 +35,7 @@ public class MongodbDao{
      */
     public  String getCompanyInfo(String stockCode){
         database= MongoConn.getConn();
-        collection=database.getCollection("CompanyInfo");
+        collection=database.getCollection("companyInfo");
         sb=new StringBuilder("[");
         cursor=collection.find(eq("stock_code", stockCode)).iterator();
         try{
