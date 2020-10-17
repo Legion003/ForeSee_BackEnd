@@ -1,15 +1,13 @@
 package com.ForeSee.ForeSee.controller;
 
 import com.ForeSee.ForeSee.service.InfoService;
-import lombok.extern.slf4j.Slf4j;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@Slf4j
 @RestController
 public class InfoController {
     @Autowired
@@ -21,11 +19,9 @@ public class InfoController {
      * @return
      */
     @GetMapping("/companyInfo/{query}")
+    @HystrixCommand(fallbackMethod="hystrixWrong")
     public String getCompanyInfo(@PathVariable("query")String query){
-        log.info("Receive getCompanyInfo request: "+query);
-        String result = infoService.getCompanyInfo(query);
-        log.info(result);
-        return result;
+        return infoService.getCompanyInfo(query);
     }
 
     /**
@@ -35,9 +31,10 @@ public class InfoController {
      */
     @GetMapping("/allInfo/{stockCode}")
     public String getAllInfo(@PathVariable("stockCode")String stockCode){
-        log.info("Receive getAllInfo request: "+stockCode);
-        String result = infoService.getAllInfo(stockCode);
-        log.info(result);
-        return result;
+        return infoService.getAllInfo(stockCode);
+    }
+
+    public String hystrixWrong(@PathVariable("query")String query){
+        return "发生错误";
     }
 }

@@ -68,7 +68,7 @@ public class RedisDao {
         String stockCode = "";
         Jedis jedis= jedisUtil.getClient();
         jedis.select(2);
-        if(jedis.sismember("stockcode",query)){
+        if(jedis.sismember("stock_code",query)){
             log.info("query是stockcode类型，redis返回"+query);
             stockCode = query;
         }else if(jedis.exists(query)){

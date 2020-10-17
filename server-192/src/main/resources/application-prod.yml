@@ -1,8 +1,8 @@
 # 生产环境配置文件
 server:
-  port: 8770
-  servlet:
-    context-path: /ForeSee
+  port: 8288
+#  servlet:
+#    context-path: /ForeSee
 
 management:
   endpoint:

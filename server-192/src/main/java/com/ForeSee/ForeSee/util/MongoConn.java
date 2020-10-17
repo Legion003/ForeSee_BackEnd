@@ -3,16 +3,13 @@ package com.ForeSee.ForeSee.util;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
 
 @Slf4j
-@Component
 public class MongoConn {
     /**
      * @return Mongodb的连接
      */
-    public MongoDatabase getConn(){
+    public static MongoDatabase getConn(){
         MongoDatabase mongoDatabase = null;
         MongoClient mongoClient = null;
         try{

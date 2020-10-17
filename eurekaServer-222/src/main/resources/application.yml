@@ -1,0 +1,28 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: springcloud-eureka-server
+eureka:
+   instance:
+     hostname: eurekaServer
+   client:
+     register-with-eureka: false
+     fetch-registry: false
+     service-url:
+       defaultZone: http://localhost:8888/eureka/
+
+
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /MyActuator
+  server:
+    port: 12582
+    address: 127.0.0.1

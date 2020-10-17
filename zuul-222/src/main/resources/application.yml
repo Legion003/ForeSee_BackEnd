@@ -1,0 +1,44 @@
+server:
+  port: 6666
+
+spring:
+  application:
+    name: spring-cloud-zuul
+
+eureka:
+  client:
+   service-url:
+      defaultZone: http://localhost:8888/eureka/
+#      defaultZone: http://127.0.0.1:8888/eureka/
+  instance:
+    instance-id: springcloud-zuul
+    prefer-ip-address: true
+
+info:
+  app.name: springcloud-zuul
+  company.name: www.foresee.com
+
+zuul:
+  routes:
+    fore.serviceId: spring-cloud-foresee
+    fore.path: /foresee/**
+  host:
+      connect-timeout-millis: 60000 #HTTP连接超时大于Hystrix的超时时间
+      socket-timeout-millis: 60000   #socket超时
+
+ribbon:
+  ReadTimeout: 120000
+  ConnectTimeout: 30000
+
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /MyActuator
+  server:
+    port: 12581
+    address: 127.0.0.1
