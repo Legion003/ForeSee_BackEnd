@@ -6,6 +6,7 @@ import com.mongodb.client.*;
 
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,13 +21,14 @@ import static com.mongodb.client.model.Filters.eq;
 @Slf4j
 @Component
 public class MongodbDao{
-    public  MongoCursor<Document> cursor;
+    public MongoCursor<Document> cursor;
     public StringBuilder sb;
-    public  MongoDatabase database;
-    public  MongoCollection<Document> collection;
-    public  Document document;
-    public  List<Document> documents;
-    public  String string;
+    public MongoDatabase database;
+    public MongoCollection<Document> collection;
+    public Document document;
+    public List<Document> documents;
+    @Autowired
+    MongoConn mongoConn;
 
     /**
      * 查询CompanyInfo表
@@ -34,7 +36,7 @@ public class MongodbDao{
      * @return
      */
     public  String getCompanyInfo(String stockCode){
-        database= MongoConn.getConn();
+        database= mongoConn.getConn();
         collection=database.getCollection("companyInfo");
         sb=new StringBuilder("[");
         cursor=collection.find(eq("stock_code", stockCode)).iterator();
@@ -60,7 +62,7 @@ public class MongodbDao{
      * @return
      */
     public String getStockNews(String stockCode){
-        database= MongoConn.getConn();
+        database= mongoConn.getConn();
         collection=database.getCollection("stockNews");
         document=collection.find(eq("allInfo.stock_code",stockCode)).first();
         sb=new StringBuilder("[");
@@ -99,7 +101,7 @@ public class MongodbDao{
      * @return
      */
     public String getStockNotice(String stockCode){
-        database= MongoConn.getConn();
+        database= mongoConn.getConn();
         collection=database.getCollection("stockNotice");
         document=collection.find(eq("stock_code",stockCode)).first();
         sb=new StringBuilder("[");
