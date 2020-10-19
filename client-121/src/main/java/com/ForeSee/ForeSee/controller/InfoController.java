@@ -2,7 +2,6 @@ package com.ForeSee.ForeSee.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,8 +14,6 @@ import org.springframework.web.client.RestTemplate;
 public class InfoController {
     @Autowired
     RestTemplate restTemplate;
-  //  @Value("${httpUrl}")
-//    String httpUrl = "http://127.0.0.1:7777/foresee";
 
     private static final String REST_URL_PREFIX = "http://222.200.184.74:6666/foresee";
 
@@ -27,7 +24,6 @@ public class InfoController {
      */
     @GetMapping("/companyInfo/{query}")
     public String getCompanyInfo(@PathVariable("query")String query){
-//        String url = httpUrl+"/companyInfo/"+query;
         log.info("Receive getCompanyInfo request:"+query);
         String url = REST_URL_PREFIX +"/companyInfo/"+query;
         String result = restTemplate.getForObject(url, String.class);
@@ -43,7 +39,6 @@ public class InfoController {
     @GetMapping("/allInfo/{stockCode}")
     public String getAllInfo(@PathVariable("stockCode")String stockCode){
         log.info("Receive getAllInfo request:"+stockCode);
-//        String url = httpUrl+"/allInfo/"+stockCode;
         String url = REST_URL_PREFIX + "/allInfo/"+stockCode;
         String result = restTemplate.getForObject(url, String.class);
         log.info(result);

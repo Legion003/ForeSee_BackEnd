@@ -3,18 +3,6 @@ server:
   port: 8287
   servlet:
     context-path: /ForeSee
-<<<<<<< HEAD:server-192/target/classes/application-dev.yml
-
-spring:
-  redis:
-    host: localhost
-    port: 6379
-    jedis:
-      pool:
-        min-idle: 0
-        max-idle: 10
-=======
->>>>>>> f7dbf0622368b74b97abe78de399d6106016d011:ForeSee_BackEnd2.0/server-192/src/main/resources/application-dev.yml
 
 #spring:
 #  data:
