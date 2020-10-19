@@ -1,4 +1,4 @@
-package com.ForeSee.ForeSee.dao.dao;
+package com.ForeSee.ForeSee.dao;
 
 import com.ForeSee.ForeSee.dao.RedisDao;
 import lombok.extern.slf4j.Slf4j;
@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 /**
  * @author Zenglr
@@ -27,5 +29,13 @@ public class RedisDaoTest {
         String testAns = "000613";
         log.info(result);
         Assert.assertEquals("Wrong output！",testAns,result);
+    }
+
+    @Test
+    public void getStockCodeListTest(){
+        String query = "蓝";
+        log.info("使用"+query+"进行模糊查询");
+        List<String> result = redisDao.getStockCodeList(query);
+        log.info(result.toString());
     }
 }

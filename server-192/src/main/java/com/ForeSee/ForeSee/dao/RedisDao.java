@@ -8,8 +8,11 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.ScanParams;
+import redis.clients.jedis.ScanResult;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -80,6 +83,76 @@ public class RedisDao {
         jedis.close();
         return stockCode;
 
+    }
+
+    /**
+     * 使用Jedis模糊查询query
+     * @param query
+     * @return StockCodeList
+     */
+    public List<String> getStockCodeList(String query)
+    {
+        long startTime = System.currentTimeMillis();
+        List<String> keys = FuzzySearchQuery(query);
+        Jedis jedis= jedisUtil.getClient();
+        jedis.select(2);
+        log.info("模糊匹配到keys："+keys.toString());
+        List<String> list = new ArrayList<>();
+        if(keys.size()>0){
+            for(String key : keys){
+                list.add(jedis.get(key));
+            }
+        }else {
+            log.info("redis没有查到，返回"+list.toString());
+            return list;
+        }
+        List<String> result = new ArrayList<String>(new LinkedHashSet<String>(list)); //去重（顺序不变）
+        log.info("redis模糊查找:"+query+",返回"+result.toString());
+        long finishQueryTime = System.currentTimeMillis();
+        log.info("Jedis process time:" + (finishQueryTime - startTime));
+        return result;
+    }
+
+    /**
+     * 进行模糊匹配
+     * @param query
+     * @return
+     */
+    public List<String> FuzzySearchQuery(String query){
+        log.info("{} 模糊匹配",query);
+        String pattern=query.trim().replaceAll("\\s+","*");
+        pattern="*"+pattern+"*";
+        List<String>res=jedisScan(pattern);
+        log.info("{} 模糊匹配,size:{}",pattern, res.size());
+        return res.subList(0,Math.min(10,res.size()));
+    }
+
+    /**
+     * 使用jedis进行key的扫描匹配
+     * @param pattern
+     * @return keys
+     */
+    private List<String> jedisScan(String pattern){
+        long startTime = System.currentTimeMillis();
+        Jedis jedis= jedisUtil.getClient();
+        jedis.select(2);
+        String cursor = ScanParams.SCAN_POINTER_START;
+        List<String> keys = new ArrayList<>();
+        ScanParams scanParams = new ScanParams();
+        scanParams.match(pattern);
+        scanParams.count(1000);
+        while (true){
+            //使用scan命令获取数据，使用cursor游标记录位置，下次循环使用
+            ScanResult<String> scanResult = jedis.scan(cursor, scanParams);
+            cursor = scanResult.getCursor();// 返回0 说明遍历完成
+            keys = scanResult.getResult();
+            if ("0".equals(cursor)){
+                break;
+            }
+        }
+        long finishTime = System.currentTimeMillis();
+        log.info("jedisScan process time:" + (finishTime - startTime));
+        return keys;
     }
 
 
