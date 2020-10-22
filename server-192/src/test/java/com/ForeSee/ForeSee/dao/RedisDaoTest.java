@@ -33,9 +33,28 @@ public class RedisDaoTest {
 
     @Test
     public void getStockCodeListTest(){
-        String query = "蓝";
+        String query = "上海";
         log.info("使用"+query+"进行模糊查询");
         List<String> result = redisDao.getStockCodeList(query);
         log.info(result.toString());
     }
+
+    @Test
+    public void getAnsOnPageTest()
+    {
+        String query = "汽车 上海 中天 东方";
+        log.info("测试getAnsOnPageTest");
+        List<String> res = redisDao.getAnsOnPage(2,query);
+        log.info(res.size()+res.toString());
+    }
+
+    @Test
+    public void getPageNum()
+    {
+        String query = "汽车 上海 中天 东方";
+        log.info("测试getPageNum");
+        Long num = redisDao.getPageNum(query);
+        log.info("一共有"+num+"页");
+    }
+
 }

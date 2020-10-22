@@ -27,38 +27,10 @@ public class RedisDao {
 
     @Autowired
     JedisUtil jedisUtil;
-//    根据stockname得到stockcode
-//    public static String getCodeByStockcode(String stockcode)
-//    {
-//        Jedis jedis = new Jedis("192.168.1.108",6479);
-//        jedis.auth("nopassword");
-//        jedis.select(1);
-//        if(jedis.sismember("stockcode", stockcode))
-//            return stockcode;
-//        else return null;
-//    }
-//
-//    //根据stockname得到stockcode
-//    public static String getCodeByStcokname(String stockname)
-//    {
-//        Jedis jedis = new Jedis("192.168.1.108",6479);
-//        jedis.auth("nopassword");
-//        jedis.select(2);
-//        if(jedis.exists(stockname))
-//            return jedis.get(stockname);
-//        else return null;
-//    }
-//
-//    //根据companyname得到stockcode
-//    public static String getCodeByCompanyname(String companyname)
-//    {
-//        Jedis jedis = new Jedis("192.168.1.108",6479);
-//        jedis.auth("nopassword");
-//        jedis.select(3);
-//        if ((jedis.exists(companyname)))
-//            return jedis.get(companyname);
-//        else return null;
-//    }
+
+    //分页的每一页的结果数
+    static int pageRecord = 30;
+
 
     /**
      * 一框式检索，根据stockcode、stockname、companyname的检索统一返回stockcode
@@ -86,31 +58,77 @@ public class RedisDao {
     }
 
     /**
-     * 使用Jedis模糊查询query
+     * 根据传入的query进行切词，返回所有检索字段对应检索结果的stockCode列表
      * @param query
-     * @return StockCodeList
+     * @return stockList
      */
     public List<String> getStockCodeList(String query)
     {
         long startTime = System.currentTimeMillis();
-        List<String> keys = FuzzySearchQuery(query);
-        Jedis jedis= jedisUtil.getClient();
-        jedis.select(2);
+        //对检索词串进行切词
+        String queries[] = query.split(" ");
+        List<String> list = new ArrayList<>();
+        for(int i = 0; i < queries.length; i++)
+        {
+            list.add(queries[i]);
+        }
+        List<String> res = new ArrayList<>();
+        Jedis jedis = jedisUtil.getClient();
+        for(String key:list)
+        {
+            jedis.select(1);
+            //如果检索词是stockCode，则不需要做模糊匹配
+            if(jedis.sismember("stockCode",key)) {
+                res.add(key);
+                continue;
+            }
+            //检索词为文字，进行模糊匹配
+            for(int i = 2; i < 5; i++)
+            {
+                jedis.select(i);
+                res.addAll(FuzzySearchList(key,i));
+            }
+        }
+        List<String> result = new ArrayList<String>(new LinkedHashSet<String>(res)); //去重（顺序不变）
+        long finishQueryTime = System.currentTimeMillis();
+        log.info("Jedis process time:" + (finishQueryTime - startTime));
+        jedis.close();
+        return result.subList(0,Math.min(10,res.size())); //返回十条
+//        return result;  //使用分页查询时使用
+    }
+
+    /**
+     * 使用Jedis模糊查询query
+     * @param query
+     * @return result
+     */
+    public List<String> FuzzySearchList(String query, int baseNum)
+    {
+        List<String> keys = FuzzySearchQuery(query, baseNum);
+        Jedis jedis = jedisUtil.getClient();
+        jedis.select(baseNum);
+        log.info("在数据库{}中查找",baseNum);
         log.info("模糊匹配到keys："+keys.toString());
         List<String> list = new ArrayList<>();
         if(keys.size()>0){
-            for(String key : keys){
-                list.add(jedis.get(key));
+            if(baseNum == 4){
+                for(String key : keys){
+                    list.addAll(jedis.smembers(key));
+                }
+            }
+            else
+            {
+                for (String key : keys) {
+                    list.add(jedis.get(key));
+                }
             }
         }else {
             log.info("redis没有查到，返回"+list.toString());
             return list;
         }
-        List<String> result = new ArrayList<String>(new LinkedHashSet<String>(list)); //去重（顺序不变）
-        log.info("redis模糊查找:"+query+",返回"+result.toString());
-        long finishQueryTime = System.currentTimeMillis();
-        log.info("Jedis process time:" + (finishQueryTime - startTime));
-        return result;
+        log.info("redis模糊查找:"+query+",返回"+list.toString());
+        jedis.close();
+        return list;
     }
 
     /**
@@ -118,13 +136,13 @@ public class RedisDao {
      * @param query
      * @return
      */
-    public List<String> FuzzySearchQuery(String query){
-        log.info("{} 模糊匹配",query);
+    public List<String> FuzzySearchQuery(String query, int baseNum){
         String pattern=query.trim().replaceAll("\\s+","*");
-        pattern="*"+pattern+"*";
-        List<String>res=jedisScan(pattern);
+        pattern="*" + pattern + "*";
+        List<String>res=jedisScan(pattern, baseNum);
         log.info("{} 模糊匹配,size:{}",pattern, res.size());
-        return res.subList(0,Math.min(10,res.size()));
+//        return res.subList(0,Math.min(10,res.size()));
+        return res;
     }
 
     /**
@@ -132,15 +150,14 @@ public class RedisDao {
      * @param pattern
      * @return keys
      */
-    private List<String> jedisScan(String pattern){
-        long startTime = System.currentTimeMillis();
+    private List<String> jedisScan(String pattern, int baseNum){
         Jedis jedis= jedisUtil.getClient();
-        jedis.select(2);
+        jedis.select(baseNum);
         String cursor = ScanParams.SCAN_POINTER_START;
         List<String> keys = new ArrayList<>();
         ScanParams scanParams = new ScanParams();
         scanParams.match(pattern);
-        scanParams.count(1000);
+        scanParams.count(10000);
         while (true){
             //使用scan命令获取数据，使用cursor游标记录位置，下次循环使用
             ScanResult<String> scanResult = jedis.scan(cursor, scanParams);
@@ -150,10 +167,37 @@ public class RedisDao {
                 break;
             }
         }
-        long finishTime = System.currentTimeMillis();
-        log.info("jedisScan process time:" + (finishTime - startTime));
+        jedis.close();
         return keys;
     }
 
+    /**
+     * getAnsOnPage通过传进的页码page和检索词query查找对应页要返回的stockcode
+     * @param page
+     * @param query
+     * @return
+     */
+    public List<String> getAnsOnPage(int page, String query){
+        List<String> list = new ArrayList<String>();
+        list = getStockCodeList(query);
+        int start = (page - 1) * pageRecord;
+        int end = start + pageRecord - 1;
+        List<String> res = new ArrayList<>();
+        res = list.subList(start,end + 1);
+        return res;
+    }
+
+    /**
+     * 返回要显示的页码总数
+     * @param query
+     * @return
+     */
+    public Long getPageNum(String query){
+        List<String> list = new ArrayList<String>();
+        list = getStockCodeList(query);
+        long num = list.size();
+        long page = num / pageRecord + 1;
+        return page;
+    }
 
 }
