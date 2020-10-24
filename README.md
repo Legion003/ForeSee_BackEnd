@@ -31,9 +31,12 @@ ForeSee
 | 工具          | 说明                | 官网                                            |
 | ------------- | ------------------- | ----------------------------------------------- |
 | IDEA          | 开发IDE             | https://www.jetbrains.com/idea/download         |
-| RedisDesktop  | redis客户端连接工具 | https://github.com/qishibo/AnotherRedisDesktopManager  |
-| Robomongo     | mongo客户端连接工具 | https://robomongo.org/download                  |
 | X-shell       | Linux远程连接工具   | http://www.netsarang.com/download/software.html |
 
 ### 开发环境
 
+| 工具          | 版本号 | 下载                                                         |
+| ------------- | ------ | ------------------------------------------------------------ |
+| JDK           | 1.8    | https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html |
+| Redis         | 5.0.8   | https://redis.io/download                                    |
+| MongoDB       | 2.6.10 | https://www.mongodb.com/
