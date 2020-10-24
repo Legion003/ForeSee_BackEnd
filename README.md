@@ -31,6 +31,7 @@ ForeSee
 | 工具          | 说明                | 官网                                            |
 | ------------- | ------------------- | ----------------------------------------------- |
 | IDEA          | 开发IDE             | https://www.jetbrains.com/idea/download         |
+| redis desktop manager | redis客户端连接工具 | https://rdm.dev/      |
 | X-shell       | Linux远程连接工具   | http://www.netsarang.com/download/software.html |
 
 ### 开发环境
