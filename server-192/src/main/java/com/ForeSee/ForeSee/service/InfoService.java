@@ -22,6 +22,7 @@ public class InfoService {
     public String getCompanyInfo(String query){
         // redis方法
         String stockCode = redisDao.getStockcode(query);
+//        List<String> stockCode = redisDao.getStockCodeList(query);   //redis模糊查询返回stockCodeList
         // mongodb方法
         String companyInfo = mongodbDao.getCompanyInfo(stockCode);
         return companyInfo;
