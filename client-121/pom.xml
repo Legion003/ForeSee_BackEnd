@@ -34,12 +34,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--ribbon实现负载均衡-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-ribbon</artifactId>
-            <version>1.4.6.RELEASE</version>
-        </dependency>
         <!--Hystrix监控功能-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
