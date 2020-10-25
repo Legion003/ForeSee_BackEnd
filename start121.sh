@@ -23,7 +23,7 @@ start) # chmod +x start121.sh   ./start121.sh start
 
 stop) # ./start121.sh stop
          P_ID=`ps -ef | grep -w $CONSUMER | grep -v "grep" | awk '{print $2}'`
-                  if [ "$P_ID" == "" ]; then
+                  if [ "$P_ID" = "" ]; then
                       echo "CONSUMER process not exists or stop success"
                   else
                       kill -9 $P_ID

@@ -15,8 +15,7 @@ public class InfoController {
     @Autowired
     RestTemplate restTemplate;
 
-    private static final String REST_URL_PREFIX = "http://222.200.184.74:6666/foresee";
-
+    private static final String REST_URL_PREFIX = "http://222.200.184.74:6666";
     /**
      * 根据关键词检索内容
      * @param query 关键词
