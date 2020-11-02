@@ -32,7 +32,7 @@ public class InfoController {
 
     /**
      * 检索某个公司的所有相关信息
-     * @param stockCode 公司代码
+     * @param stockCode 公司代号
      * @return
      */
     @GetMapping("/allInfo/{stockCode}")
@@ -44,6 +44,11 @@ public class InfoController {
         return result;
     }
 
+    /**
+     * 检索某个行业的相关信息
+     * @param industryCode 行业代号
+     * @return
+     */
     @GetMapping("/industryInfo/{industryCode}")
     public String getIndustryInfo(@PathVariable("industryCode")String industryCode) {
         log.info("Receive getIndustryInfo request:" + industryCode);
