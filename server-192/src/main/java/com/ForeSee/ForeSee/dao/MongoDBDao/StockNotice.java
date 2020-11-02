@@ -43,9 +43,9 @@ public class StockNotice {
      */
     public static String getThreeLatestStockNotice(String stockCode, MongoClient client) {
         log.info("start to get Three Latest Notice from MongoDB for stock_code=" + stockCode);
-        collection= MongoConn.getConn().getDatabase("ForeSee").getCollection(table);
+        collection= client.getDatabase("ForeSee").getCollection(table);
         cursor = collection.find(eq("stock_code", stockCode))
-                .sort(Sorts.ascending("notice_time")).limit(3).iterator();
+                .sort(Sorts.descending("notice_time")).limit(3).iterator();
         sb = new StringBuilder(jsonHead);
         try {
 
@@ -76,7 +76,7 @@ public class StockNotice {
      * @return 返回字段见NoticeStructureHolder.noticeStructure
      */
     public static String getAllStockNotice(String stockCode,MongoClient client) {
-        collection= MongoConn.getConn().getDatabase("ForeSee").getCollection(table);
+        collection=client.getDatabase("ForeSee").getCollection(table);
         cursor = collection.find(eq("stock_code", stockCode)).iterator();
         sb = new StringBuilder(jsonHead);
         try {

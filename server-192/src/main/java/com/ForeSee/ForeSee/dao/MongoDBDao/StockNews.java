@@ -38,7 +38,7 @@ public class StockNews {
      */
     public static String getAllStockNews(String stockCode, MongoClient client) {
         int code = Integer.parseInt(stockCode);
-        collection= MongoConn.getConn().getDatabase("ForeSee").getCollection(tableName);
+        collection= client.getDatabase("ForeSee").getCollection(tableName);
         cursor = collection.find(eq("stock_code", code)).iterator();
         sb = new StringBuilder(jsonHead);
         try {
@@ -75,9 +75,9 @@ public class StockNews {
     public static String getThreeLatestStockNews(String stockCode,MongoClient client) {
         log.info("start to get Three Latest News from MongoDB for stock_code=" + stockCode);
         int code = Integer.parseInt(stockCode);
-        collection= MongoConn.getConn().getDatabase("ForeSee").getCollection(tableName);
+        collection= client.getDatabase("ForeSee").getCollection(tableName);
         cursor = collection.find(eq("stock_code", code))
-                .sort(Sorts.ascending("news_time")).limit(3)
+                .sort(Sorts.descending("news_time")).limit(3)
                 .iterator();
         sb = new StringBuilder(jsonHead);
         try {
