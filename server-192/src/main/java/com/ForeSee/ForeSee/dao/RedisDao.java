@@ -14,6 +14,9 @@ import redis.clients.jedis.ScanResult;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Zenglr
@@ -67,34 +70,60 @@ public class RedisDao {
         long startTime = System.currentTimeMillis();
         //对检索词串进行切词
         String queries[] = query.split(" ");
-        List<String> list = new ArrayList<>();
-        for(int i = 0; i < queries.length; i++)
-        {
-            list.add(queries[i]);
-        }
+        int runSize = queries.length;
+        //指定线程池大小为检索词数目
+        ExecutorService executor = Executors.newFixedThreadPool(runSize);
+        //countDownLatch这个类使一个线程等待其他线程各自执行完毕后再执行
+        final CountDownLatch latch = new CountDownLatch(runSize);
+
         List<String> res = new ArrayList<>();
-        Jedis jedis = jedisUtil.getClient();
-        for(String key:list)
+        //对每一个检索词用一个线程执行查询
+        for(int i = 0; i < runSize; i++)
         {
-            jedis.select(1);
-            //如果检索词是stockCode，则不需要做模糊匹配
-            if(jedis.sismember("stockCode",key)) {
-                res.add(key);
-                continue;
-            }
-            //检索词为文字，进行模糊匹配
-            for(int i = 2; i < 5; i++)
-            {
-                jedis.select(i);
-                res.addAll(FuzzySearchList(key,i));
-            }
+            String key = queries[i];
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        //jedis连接在方法外面获取时，好像不能成功，所以放在了里面，存疑
+                        Jedis jedis = jedisUtil.getClient();
+                        jedis.select(1);
+                        //如果检索词是stockCode，则不需要做模糊匹配
+                        if (jedis.sismember("stockCode", key)) {
+                            res.add(key);
+                        } else {
+                            //检索词为文字，进行模糊匹配
+                            for (int j = 2; j < 5; j++) {
+                                jedis.select(j);
+                                res.addAll(FuzzySearchList(key, j));
+                                log.info("debug"+res.toString());
+                            }
+                        }
+                        jedis.close();
+                    } catch (Exception e){
+                        System.out.println("查询失败");
+                        e.printStackTrace();
+                    }
+                    //计数器-1操作
+                    latch.countDown();
+                }
+            });
         }
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        log.info("res debug:"+res.toString());
+        executor.shutdown();
+
+
         List<String> result = new ArrayList<String>(new LinkedHashSet<String>(res)); //去重（顺序不变）
         long finishQueryTime = System.currentTimeMillis();
         log.info("Jedis process time:" + (finishQueryTime - startTime));
-        jedis.close();
-        return result.subList(0,Math.min(10,res.size())); //返回十条
-//        return result;  //使用分页查询时使用
+
+//        return result.subList(0,Math.min(10,res.size())); //返回十条
+        return result;  //使用分页查询时使用
     }
 
     /**
