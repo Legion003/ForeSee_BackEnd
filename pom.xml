@@ -12,7 +12,7 @@
         <module>client-121</module>
         <module>eurekaServer-222</module>
         <module>server-192</module>
-        <module>zuul-222</module>
+        <module>gateway-222</module>
     </modules>
 
     <properties>

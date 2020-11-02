@@ -23,7 +23,7 @@ start)
 
 stop)
          P_ID=`ps -ef | grep -w $PROVIDER | grep -v "grep" | awk '{print $2}'`
-                  if [ "$P_ID" == "" ]; then
+                  if [ "$P_ID" = "" ]; then
                       echo "SERVER process not exists or stop success"
                   else
                       kill -9 $P_ID

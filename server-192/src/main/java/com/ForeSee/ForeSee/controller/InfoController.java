@@ -19,7 +19,6 @@ public class InfoController {
      * @return
      */
     @GetMapping("/companyInfo/{query}")
-    @HystrixCommand(fallbackMethod="hystrixWrong")
     public String getCompanyInfo(@PathVariable("query")String query){
         return infoService.getCompanyInfo(query);
     }
@@ -34,8 +33,5 @@ public class InfoController {
         return infoService.getAllInfo(stockCode);
     }
 
-    public String hystrixWrong(@PathVariable("query")String query){
-        return "发生错误";
-    }
 }
 

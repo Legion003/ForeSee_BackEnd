@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>zuul-222</artifactId>
+    <artifactId>gateway-222</artifactId>
     <dependencies>
         <!--eureka客户端-->
         <dependency>
@@ -17,17 +17,11 @@
             <artifactId>spring-cloud-starter-eureka</artifactId>
             <version>1.4.6.RELEASE</version>
         </dependency>
-        <!--Zuul-->
+        <!--Gateway路由网关-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zuul</artifactId>
-            <version>1.4.6.RELEASE</version>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
-        <!--spring cloud config-->
-        <!--<dependency>-->
-            <!--<groupId></groupId>-->
-            <!--<artifactId></artifactId>-->
-        <!--</dependency>-->
     </dependencies>
 
     <build>
@@ -39,7 +33,7 @@
 
                 <!--添加自己的启动类路径！-->
                 <configuration>
-                    <mainClass>com.ForeSee.ForeSee.zuulMain</mainClass>
+                    <mainClass>com.ForeSee.ForeSee.GatewayMain</mainClass>
                 </configuration>
 
                 <executions>

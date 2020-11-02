@@ -1,10 +1,10 @@
 #!/bin/sh
 export EUREKA=./eurekaServer-222/target/eurekaServer-222-1.0-SNAPSHOT.jar
-export GATEWAY=./zuul-222/target/zuul-222-1.0-SNAPSHOT.jar
+export GATEWAY=./gateway-222/target/gateway-222-1.0-SNAPSHOT.jar
 export EUREKA_port=8888
 export GATEWAY_port=6666
 export EUREKA_log=./logs/eurekaServer.log
-export GATEWAY_log=./logs/zuul.log
+export GATEWAY_log=./logs/gateway.log
 
 case "$1" in
 
@@ -22,15 +22,15 @@ start)
         echo "--------eureka Server启动成功--------------"
 
          ## 启动路由网关
-        echo "--------开始启动Zuul---------------"
+        echo "--------开始启动Gateway---------------"
         nohup java -jar $GATEWAY > $GATEWAY_log 2>&1 &
         GATEWAY_pid=`lsof -i:$GATEWAY_port|grep "LISTEN"|awk '{print $2}'`
         until [ -n "$GATEWAY_pid" ]
             do
               GATEWAY_pid=`lsof -i:$GATEWAY_port|grep "LISTEN"|awk '{print $2}'`
             done
-        echo "ZUUL pid is $GATEWAY_pid"
-        echo "---------Zuul 启动成功-----------"
+        echo "Gateway pid is $GATEWAY_pid"
+        echo "---------Gateway启动成功-----------"
 
         echo "=====start success=====";;
 
@@ -46,10 +46,10 @@ stop)
 
          P_ID=`ps -ef | grep -w $GATEWAY | grep -v "grep" | awk '{print $2}'`
                  if [ "$P_ID" == "" ]; then
-                     echo "Zuul process not exists or stop success"
+                     echo "Gateway process not exists or stop success"
                  else
                      kill -9 $P_ID
-                     echo "Zuul killed success"
+                     echo "Gateway killed success"
                  fi
          echo "=====stop success=====";;
 

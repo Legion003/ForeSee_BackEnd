@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
-@EnableCircuitBreaker
 public class ServerMain {
     public static void main(String[] args) {
         SpringApplication.run(ServerMain.class, args);
