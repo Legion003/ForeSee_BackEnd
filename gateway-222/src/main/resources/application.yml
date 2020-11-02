@@ -22,6 +22,11 @@ spring:
              - Path=/allInfo/**
              - Method=GET
 
+         - id: springcloud-foresee3
+           uri: lb://springcloud-foresee
+           predicates:
+             - Path=/industryInfo/**
+             - Method=GET
 
 eureka:
   client:
