@@ -15,7 +15,7 @@ public class IndustryInfo {
         MongoCursor cursor=null;
         StringBuilder sb=new StringBuilder("{\"introduction\":{" +
                 "\"brief\":\"目前后端好像还没有这个数据\"" +
-                "\"url\":\"目前后端好像还没有这个数据\"" +
+                ",\"url\":\"目前后端好像还没有这个数据\"" +
                 "},");
         try {
             cursor = collection.find(eq("industry_code", industryCode)).iterator();
@@ -33,6 +33,7 @@ public class IndustryInfo {
         }finally {
             cursor.close();
         }
+        sb.append("]}");
         return sb.toString();
     }
 }

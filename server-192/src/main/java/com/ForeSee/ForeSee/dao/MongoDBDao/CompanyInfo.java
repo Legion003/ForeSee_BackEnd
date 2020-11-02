@@ -120,7 +120,9 @@ public class CompanyInfo {
         for (String name : tableStructure.keySet()) {
             sb.append("{\"name\":\"" + name + "\",\"value\":");
             if (!originDoc.isEmpty()) {
+                sb.append("\"");
                 sb.append(originDoc.get(tableStructure.get(name)));
+                sb.append("\"");
             } else {
                 sb.append("\"\"");
             }
