@@ -7,7 +7,7 @@
 ### 模块结构
 
 ```lua
-├── 、gateway-222
+├── gateway-222
     ├── src
         ├── main
             ├── java  -- java源文件
