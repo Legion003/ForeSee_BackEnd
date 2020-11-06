@@ -1,6 +1,5 @@
 package com.ForeSee.ForeSee.dao.MongoDBDao;
 
-import com.ForeSee.ForeSee.util.MongoConn;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;

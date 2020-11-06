@@ -48,10 +48,7 @@ public class CompanyInfo {
         static {
             fieldReflect.put("former_name", "entName");
             fieldReflect.put("stock_code", "stock_code");
-            fieldReflect.put("registered_address", "regAddr");
-            fieldReflect.put("Logo", "entLogo");
-            fieldReflect.put("industry_code", "industry_code");
-
+            fieldReflect.put("logo", "entLogo");
         }
     }
     private static Map<String, String> getTableStructure() {
