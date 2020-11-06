@@ -1,6 +1,5 @@
-package com.ForeSee.ForeSee.dao.service;
+package com.ForeSee.ForeSee.service;
 
-import com.ForeSee.ForeSee.service.InfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ public class InfoServiceTest {
     InfoService infoService;
     @Test
     public void getAllInfo(){
-        String result = infoService.getAllInfo("300433");
+        String result = infoService.getAllInfo("600089");
         log.info(result);
     }
 }

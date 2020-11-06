@@ -55,12 +55,15 @@ public class InfoService {
             sb.append(",");
             String stockNotice = StockNotice.getThreeLatestStockNotice(stockCode, mongoClient);
             sb.append(stockNotice, 1, stockNotice.length() - 1);
-            sb.append(",\"profit\":{");
+            sb.append(",\"profit\":");
             String profit = Profit.getProfit(stockCode, mongoClient);
-            sb.append(profit, 1, profit.length() - 1);
-            sb.append("},");
+            sb.append(profit);
+            sb.append(",");
             String geo = GeoInfo.getCompanyGeoInfo(stockCode,mongoClient);
             sb.append(geo);
+            sb.append(",");
+            String contact=CompanyInfo.getContactInfo(stockCode,mongoClient);
+            sb.append(contact,1,contact.length() -1);
             sb.append("}");
         }finally {
             mongoClient.close();

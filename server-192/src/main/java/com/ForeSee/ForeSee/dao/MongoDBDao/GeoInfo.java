@@ -17,8 +17,9 @@ public class GeoInfo {
         MongoCollection<Document> collection=client.getDatabase("ForeSee").getCollection(table);
         StringBuilder sb=new StringBuilder("\"geo\":");
         Document document = collection.find(in("stock_code", stockCode)).first();
-        document.remove("_id");
-        if (!document.isEmpty()){
+        if (document!=null&&!document.isEmpty()){
+            document.remove("_id");
+            document.remove("industry_code");
             sb.append(document.toJson());
         }else{
             sb.append("{}");
