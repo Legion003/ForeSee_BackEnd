@@ -17,6 +17,7 @@ import static com.mongodb.client.model.Filters.eq;
 @Slf4j
 @Component
 public class StockNotice {
+    private static final int pageSize=20;
     private static class NoticeStructureHolder {
         static Map<String,String> noticeStructure =new HashMap();
         static{
@@ -25,6 +26,15 @@ public class StockNotice {
             noticeStructure.put("notice_link","link");
         }
     }
+    private static class MultiNoticeStructureHolder {
+        static Map<String,String> multiNoticeStructure =new HashMap();
+        static{
+            multiNoticeStructure.put("title","notice_title");
+            multiNoticeStructure.put("date","notice_time");
+            multiNoticeStructure.put("url","link");
+        }
+    }
+    private static Map<String,String> getMultiNoticeStructure(){return MultiNoticeStructureHolder.multiNoticeStructure;}
     private static Map<String,String> getNoticeStructure(){
         return NoticeStructureHolder.noticeStructure;
     }
@@ -74,12 +84,16 @@ public class StockNotice {
      * @param stockCode
      * @return 返回字段见NoticeStructureHolder.noticeStructure
      */
-    public static String getAllStockNotice(String stockCode,MongoClient client) {
+    public static String getAllStockNotice(String stockCode,MongoClient client,String page) {
         collection=client.getDatabase("ForeSee").getCollection(table);
-        cursor = collection.find(eq("stock_code", stockCode)).iterator();
-        sb = new StringBuilder(jsonHead);
+        cursor = collection.find(eq("stock_code", stockCode))
+                .sort(Sorts.descending("notice_time"))
+                .skip(pageSize*(Integer.parseInt(page)-1))
+                .limit(pageSize).iterator();
+        String head="{\"page\":"+page+",\"notice\":[";
+        sb = new StringBuilder(head);
         try {
-            Map<String,String> info=getNoticeStructure();
+            Map<String,String> info=getMultiNoticeStructure();
             while (cursor.hasNext()) {
                 Document originDoc = cursor.next(),extractDoc=new Document();
                 for(String name:info.keySet()){
@@ -91,10 +105,10 @@ public class StockNotice {
         } finally {
             cursor.close();
         }
-        if (sb.length() > jsonHead.length()) {
+        if (sb.length() > head.length()) {
             sb.deleteCharAt(sb.length() - 1);
         }
-        sb.append("]]");
+        sb.append("]}");
         log.info("getAllNotice from MongoDB for stock_code=");
         return sb.toString();
     }

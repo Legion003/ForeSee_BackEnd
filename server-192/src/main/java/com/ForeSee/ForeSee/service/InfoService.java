@@ -86,4 +86,40 @@ public class InfoService {
         }
         return sb.toString();
     }
+
+    /**
+     * 返回单个stockCode的所有Notice，由新到旧，每页20条
+     * @param stockCode
+     * @param page
+     * @return
+     */
+    public String getAllNotice(String stockCode, String page){
+        MongoClient mongoClient=null;
+        StringBuilder sb=new StringBuilder();
+        try{
+            mongoClient=MongoConn.getConn();
+            sb.append(StockNotice.getAllStockNotice(stockCode,mongoClient,page));
+        }finally{
+            mongoClient.close();
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 返回单个stockCode的所有News，由新到旧，每页20条
+     * @param stockCode
+     * @param page
+     * @return
+     */
+    public String getAllNews(String stockCode, String page){
+        MongoClient mongoClient=null;
+        StringBuilder sb=new StringBuilder();
+        try{
+            mongoClient=MongoConn.getConn();
+            sb.append(StockNews.getAllStockNews(stockCode,mongoClient,page));
+        }finally{
+            mongoClient.close();
+        }
+        return sb.toString();
+    }
 }

@@ -8,12 +8,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.mongodb.client.model.Filters.eq;
 
 @Slf4j
 public class StockNews {
+    private static class MultiNewsStructureHolder {
+        static Map<String,String> multiNewsStructure =new HashMap();
+        static{
+            multiNewsStructure.put("title","news_title");
+            multiNewsStructure.put("date","news_time");
+            multiNewsStructure.put("url","news_link");
+        }
+    }
+    private static Map<String,String> getMultiNewsStructure(){return MultiNewsStructureHolder.multiNewsStructure;}
     private static class NewsStructureHolder{
         static List<String> newsStructure=new ArrayList();
         static{
@@ -30,23 +41,28 @@ public class StockNews {
     private static MongoCursor<Document> cursor;
     private static StringBuilder sb;
     private static MongoCollection<Document> collection;
+    private static final int pageSize=20;
     /**
      * 查询News表，拿出所有StockNews
      * @param stockCode
      * @return 返回字段见 NewsStructureHolder.newsStructure
      */
-    public static String getAllStockNews(String stockCode, MongoClient client) {
+    public static String getAllStockNews(String stockCode, MongoClient client,String page) {
         int code = Integer.parseInt(stockCode);
         collection= client.getDatabase("ForeSee").getCollection(tableName);
-        cursor = collection.find(eq("stock_code", code)).iterator();
-        sb = new StringBuilder(jsonHead);
+        cursor = collection.find(eq("stock_code", code))
+                .sort(Sorts.descending("news_time"))
+                .skip(pageSize*(Integer.parseInt(page)-1))
+                .limit(pageSize).iterator();
+        String head="{\"page\": "+page+",\"news\": [\"";
+        sb = new StringBuilder(head);
         try {
             while (cursor.hasNext()) {
                 Document originDoc = cursor.next(),extractDoc=new Document();
-                List<String> info=getNewsStructure();
-                for(String name:info){
-                    String tmp= (String) originDoc.get(name);
-                    if(name.equals("news_link")){
+                Map<String,String> info=getMultiNewsStructure();
+                for(String name:info.keySet()){
+                    String tmp= (String) originDoc.get(info.get(name));
+                    if(name.equals("url")){
                         tmp=tmp.substring(1,tmp.length() - 1);
                     }
                     extractDoc.put(name,tmp);
@@ -57,10 +73,10 @@ public class StockNews {
         } finally {
             cursor.close();
         }
-        if (sb.length() > jsonHead.length()) {
+        if (sb.length() > head.length()) {
             sb.deleteCharAt(sb.length() - 1);
         }
-        sb.append("]]");
+        sb.append("]}");
         log.info("getAllNews from MongoDB for stock_code=");
         return sb.toString();
     }
