@@ -43,8 +43,13 @@ public class StockNews {
         try {
             while (cursor.hasNext()) {
                 Document originDoc = cursor.next(),extractDoc=new Document();
-                for(String name:getNewsStructure()){
-                    extractDoc.put(name,originDoc.get(name));
+                List<String> info=getNewsStructure();
+                for(String name:info){
+                    String tmp= (String) originDoc.get(name);
+                    if(name.equals("news_link")){
+                        tmp=tmp.substring(1,tmp.length() - 1);
+                    }
+                    extractDoc.put(name,tmp);
                 }
                 sb.append(extractDoc.toJson());
                 sb.append(",");
@@ -82,8 +87,13 @@ public class StockNews {
         try {
             while (cursor.hasNext()) {
                 Document originDoc = cursor.next(),extractDoc=new Document();
-                for(String name:getNewsStructure()){
-                    extractDoc.put(name,originDoc.get(name));
+                List<String> info=getNewsStructure();
+                for(String name:info){
+                    String tmp= (String) originDoc.get(name);
+                    if(name.equals("news_link")){
+                        tmp=tmp.substring(1,tmp.length() - 1);
+                    }
+                    extractDoc.put(name,tmp);
                 }
                 sb.append(extractDoc.toJson());
                 sb.append(",");

@@ -1,6 +1,5 @@
 package com.ForeSee.ForeSee.dao.MongoDBDao;
 
-import com.ForeSee.ForeSee.util.MongoConn;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -9,8 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -19,14 +18,14 @@ import static com.mongodb.client.model.Filters.eq;
 @Component
 public class StockNotice {
     private static class NoticeStructureHolder {
-        static List<String> noticeStructure =new ArrayList();
+        static Map<String,String> noticeStructure =new HashMap();
         static{
-            noticeStructure.add("notice_title");
-            noticeStructure.add("notice_time");
-            noticeStructure.add("notice_link");
+            noticeStructure.put("notice_title","notice_title");
+            noticeStructure.put("notice_time","notice_time");
+            noticeStructure.put("notice_link","link");
         }
     }
-    private static List<String> getNoticeStructure(){
+    private static Map<String,String> getNoticeStructure(){
         return NoticeStructureHolder.noticeStructure;
     }
     private static final String jsonHead="[\"notice_info\":[";
@@ -48,11 +47,11 @@ public class StockNotice {
                 .sort(Sorts.descending("notice_time")).limit(3).iterator();
         sb = new StringBuilder(jsonHead);
         try {
-
+            Map<String,String> info=getNoticeStructure();
             while (cursor.hasNext()) {
                 Document originDoc = cursor.next(),extractDoc=new Document();
-                for(String name:getNoticeStructure()){
-                    extractDoc.put(name,originDoc.get(name));
+                for(String name:info.keySet()){
+                    extractDoc.put(name,originDoc.get(info.get(name)));
                 }
                 sb.append(extractDoc.toJson());
                 sb.append(",");
@@ -64,7 +63,7 @@ public class StockNotice {
             sb.deleteCharAt(sb.length() - 1);
         }
         sb.append("]]");
-        log.info("getNews from MongoDB for stock_code=" + stockCode);
+        log.info("getNotice from MongoDB for stock_code=" + stockCode);
         return sb.toString();
 
     }
@@ -80,10 +79,11 @@ public class StockNotice {
         cursor = collection.find(eq("stock_code", stockCode)).iterator();
         sb = new StringBuilder(jsonHead);
         try {
+            Map<String,String> info=getNoticeStructure();
             while (cursor.hasNext()) {
                 Document originDoc = cursor.next(),extractDoc=new Document();
-                for(String name:getNoticeStructure()){
-                    extractDoc.put(name,originDoc.get(name));
+                for(String name:info.keySet()){
+                    extractDoc.put(name,originDoc.get(info.get(name)));
                 }
                 sb.append(extractDoc.toJson());
                 sb.append(",");

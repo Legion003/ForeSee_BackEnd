@@ -47,6 +47,7 @@ public class CompanyInfo {
         static Map<String, String> singleCompanyInfoReflect = new HashMap();
         static {
             singleCompanyInfoReflect.put("former_name", "entName");
+            singleCompanyInfoReflect.put("describe","describe");
             singleCompanyInfoReflect.put("stock_code", "stock_code");
             singleCompanyInfoReflect.put("logo", "entLogo");
         }
