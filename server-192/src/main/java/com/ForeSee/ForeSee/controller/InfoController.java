@@ -29,6 +29,35 @@ public class InfoController {
     }
 
     /**
+     * 根据stockCode返回某一页的News
+     * @param stockCode page
+     * @return
+     */
+    @GetMapping("/allNews/{stockCode}/{page}")
+    public String getAllNews(@PathVariable("stockCode")String stockCode,@PathVariable("page")String page){
+        log.info("Receive  getAllNews stockCode: " + stockCode+" page:"+page);
+        log.info("Search for News...");
+        String companyInfo = infoService.getAllNews(stockCode, page);
+        log.info("Result: " + companyInfo);
+        return companyInfo;
+    }
+
+
+    /**
+     * 根据stockCode返回某一页的Notice
+     * @param stockCode page
+     * @return
+     */
+    @GetMapping("/allNews/{stockCode}/{page}")
+    public String getAllNotice(@PathVariable("stockCode")String stockCode,@PathVariable("page")String page){
+        log.info("Receive  getAllNotice stockCode: " + stockCode+" page:"+page);
+        log.info("Search for Notice...");
+        String companyInfo = infoService.getAllNotice(stockCode, page);
+        log.info("Result: " + companyInfo);
+        return companyInfo;
+    }
+
+    /**
      * 检索某个公司的所有相关信息
      * @param stockCode 公司代号
      * @return

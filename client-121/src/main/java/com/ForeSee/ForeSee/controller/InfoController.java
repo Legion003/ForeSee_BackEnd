@@ -29,6 +29,33 @@ public class InfoController {
         log.info("Result: " + result);
         return result;
     }
+    /**
+     * 根据stockCode检索某一页的Notice
+     * @param stockCode page
+     * @return
+     */
+    @GetMapping("/allNotice/{stockCode}/{page}")
+    public String getAllNotice(@PathVariable("stockCode")String stockCode,@PathVariable("page")String page){
+        log.info("Receive getAllNotice request:" + stockCode+" page="+page);
+        String url = REST_URL_PREFIX + "/allNotice/" + stockCode+"/"+page;
+        String result = restTemplate.getForObject(url, String.class);
+        log.info("Result: " + result);
+        return result;
+    }
+
+    /**
+     * 根据stockCode检索某一页的News
+     * @param stockCode page
+     * @return
+     */
+    @GetMapping("/allNews/{stockCode}/{page}")
+    public String getAllNews(@PathVariable("stockCode")String stockCode,@PathVariable("page")String page){
+        log.info("Receive getAllNews request:" + stockCode+" page="+page);
+        String url = REST_URL_PREFIX + "/allNews/" + stockCode+"/"+page;
+        String result = restTemplate.getForObject(url, String.class);
+        log.info("Result: " + result);
+        return result;
+    }
 
     /**
      * 检索某个公司的所有相关信息
