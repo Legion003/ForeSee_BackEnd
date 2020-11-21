@@ -54,7 +54,7 @@ public class StockNews {
                 .sort(Sorts.descending("news_time"))
                 .skip(pageSize*(Integer.parseInt(page)-1))
                 .limit(pageSize).iterator();
-        String head="{\"page\": "+page+",\"news\": [\"";
+        String head="{\"page\": "+page+",\"news\": [";
         sb = new StringBuilder(head);
         try {
             while (cursor.hasNext()) {

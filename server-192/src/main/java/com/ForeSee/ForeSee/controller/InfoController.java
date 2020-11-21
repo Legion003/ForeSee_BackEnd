@@ -1,7 +1,6 @@
 package com.ForeSee.ForeSee.controller;
 
 import com.ForeSee.ForeSee.service.InfoService;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,7 +47,7 @@ public class InfoController {
      * @param stockCode page
      * @return
      */
-    @GetMapping("/allNews/{stockCode}/{page}")
+    @GetMapping("/allNotice/{stockCode}/{page}")
     public String getAllNotice(@PathVariable("stockCode")String stockCode,@PathVariable("page")String page){
         log.info("Receive  getAllNotice stockCode: " + stockCode+" page:"+page);
         log.info("Search for Notice...");
