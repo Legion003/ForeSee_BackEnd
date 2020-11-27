@@ -43,3 +43,10 @@ spring:
              - Path=/industryInfo/**
              - Method=GET
 
+
+         - id: springcloud-foresee6
+           uri: lb://springcloud-foresee
+           predicates:
+             - Path=/industryReports/**
+             - Method=GET
+

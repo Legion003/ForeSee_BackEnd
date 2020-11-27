@@ -2,6 +2,7 @@ package com.ForeSee.ForeSee.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +16,8 @@ public class InfoController {
     @Autowired
     RestTemplate restTemplate;
 
-    private static final String REST_URL_PREFIX = "http://222.200.184.74:6666";
+    @Value("${http.REST_URL_PREFIX}")
+    String REST_URL_PREFIX;
     /**
      * 根据关键词检索内容
      * @param query 关键词

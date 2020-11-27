@@ -11,3 +11,5 @@ eureka:
       defaultZone: http://222.200.184.74:8888/eureka/
 
 
+http:
+  REST_URL_PREFIX: http://222.200.184.74:6666
