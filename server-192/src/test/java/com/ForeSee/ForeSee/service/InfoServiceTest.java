@@ -13,7 +13,7 @@ public class InfoServiceTest {
     InfoService infoService;
     @Test
     public void getAllInfo(){
-        String result = infoService.getAllNotice("600485","2");
+        String result = infoService.getIndustryReports("600485","1");
         log.info(result);
     }
 }

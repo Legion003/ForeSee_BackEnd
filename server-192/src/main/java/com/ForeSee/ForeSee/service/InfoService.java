@@ -122,4 +122,22 @@ public class InfoService {
         }
         return sb.toString();
     }
+
+    /**
+     * 返回行业分析报告，由新到旧，每页20条
+     * @param industryCode
+     * @param page
+     * @return
+     */
+    public String getIndustryReports(String industryCode,String page){
+        MongoClient mongoClient=null;
+        StringBuilder sb=new StringBuilder();
+        try{
+            mongoClient=MongoConn.getConn();
+            sb.append(IndustryReports.getIndustryReports(industryCode,mongoClient,page));
+        }finally{
+            mongoClient.close();
+        }
+        return sb.toString();
+    }
 }

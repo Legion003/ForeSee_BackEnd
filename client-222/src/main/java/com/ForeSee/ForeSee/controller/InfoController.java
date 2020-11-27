@@ -44,6 +44,21 @@ public class InfoController {
     }
 
     /**
+     * 根据industryCode返回某一页的行业分析报告
+     * @param industryCode
+     * @param page
+     * @return
+     */
+    @GetMapping("/industryReports/{industryCode}/{page}")
+    public String getIndustryReports(@PathVariable("industryCode")String industryCode,@PathVariable("page")String page){
+        log.info("Receive  getIndustryReports industryCode: " + industryCode+" page:"+page);
+        String url = REST_URL_PREFIX + "/industryReports/" + industryCode+"/"+page;
+        String result = restTemplate.getForObject(url, String.class);
+        log.info("Result: " + result);
+        return result;
+    }
+
+    /**
      * 根据stockCode检索某一页的News
      * @param stockCode page
      * @return

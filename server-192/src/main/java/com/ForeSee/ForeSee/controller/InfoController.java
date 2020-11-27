@@ -44,7 +44,8 @@ public class InfoController {
 
     /**
      * 根据stockCode返回某一页的Notice
-     * @param stockCode page
+     * @param stockCode
+     * @param page
      * @return
      */
     @GetMapping("/allNotice/{stockCode}/{page}")
@@ -54,6 +55,21 @@ public class InfoController {
         String companyInfo = infoService.getAllNotice(stockCode, page);
         log.info("Result: " + companyInfo);
         return companyInfo;
+    }
+
+    /**
+     * 根据industryCode返回某一页的行业分析报告
+     * @param industryCode
+     * @param page
+     * @return
+     */
+    @GetMapping("/industryReports/{industryCode}/{page}")
+    public String getIndustryReports(@PathVariable("industryCode")String industryCode,@PathVariable("page")String page){
+        log.info("Receive  getIndustryReports industryCode: " + industryCode+" page:"+page);
+        log.info("Search for IndustryReports...");
+        String industryReports = infoService.getIndustryReports(industryCode, page);
+        log.info("Result: " + industryReports);
+        return industryReports;
     }
 
     /**
@@ -83,6 +99,8 @@ public class InfoController {
         log.info("Result: " + industryInfo);
         return industryInfo;
     }
+
+
 
 }
 
