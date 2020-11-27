@@ -40,14 +40,14 @@ public class IndustryReports {
                 .skip(pageSize*(Integer.parseInt(page)-1))
                 .limit(pageSize).iterator();
         long totalPage=collection.count();
-        String head="{\"industry\": \"互联网\",\"page\":"+page+","+"\"totalpage\""+totalPage+",\"reports\":[";
+        String head="{\"industry\": \"互联网\",\"page\":"+page+","+"\"totalpage\":"+totalPage+",\"reports\":[";
         sb = new StringBuilder(head);
         try {
             while (cursor.hasNext()) {
                 Document originDoc = cursor.next(), extractDoc = new Document();
                 Map<String, String> info = getReportsStructure();
                 for (String name : info.keySet()) {
-                    String tmp = (String) originDoc.get(info.get(name));
+                    String tmp = originDoc.get(info.get(name)).toString();
                     extractDoc.put(name, tmp);
                 }
                 sb.append(extractDoc.toJson());
