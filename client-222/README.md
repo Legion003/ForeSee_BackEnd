@@ -7,7 +7,7 @@
 ### 模块结构
 
 ```lua
-├── client-121
+├── client-222
     ├── src
         ├── main
             ├── java  -- java源文件
@@ -32,7 +32,7 @@
 
 请求路径：/ForeSee/companyInfo
 
-请求参数：关键词
+请求参数：关键词（公司名、公司股票代号、行业名、行业代号）
 
 返回参数：
 
@@ -91,7 +91,7 @@
 | profit.income           | 公司收入           |
 | profit.profit           | 公司利润           |
 | profit.total_profit     | 公司总利润         |
-| profit.net_profit       | 公司网络利润       |
+| profit.net_profit       | 公司净利润         |
 | geo                     | 地理信息           |
 | geo.lng                 | 经度               |
 | geo.lat                 | 纬度               |
@@ -267,10 +267,13 @@
 
 返回参数：
 
-| 参数   | 说明           |
-| ------ | -------------- |
-| page   | Notice页数     |
-| notice | Notice内容数组 |
+| 参数         | 说明           |
+| ------------ | -------------- |
+| page         | Notice页数     |
+| notice       | Notice内容数组 |
+| notice.date  | Notice日期     |
+| notice.title | Notice标题     |
+| notice.url   | Notice链接     |
 
 返回样例：
 
@@ -278,6 +281,16 @@
 {
     "page":1,
     "notice":[
+        {
+            "date":"2020-10-18",
+            "title":"关于下属子公司签署推广装配式建筑体系合作协议的公告",
+            "url":"http://static.sse.com.cn/disclosure/listedinfo/announcement/c/2020-10-19/600496_20201019_2.pdf"
+        },
+        {
+            "date":"2020-10-16",
+            "title":"关于控股股东股权质押的公告",
+            "url":"http://static.sse.com.cn/disclosure/listedinfo/announcement/c/2020-10-17/600496_20201017_1.pdf"
+        }
     ]
 }
 ```
@@ -324,8 +337,6 @@
 
 
 
-
-
 #### 行业分析报告
 
 请求方法：GET
@@ -336,16 +347,16 @@
 
 返回参数：
 
-| 参数             | 说明     |
-| ---------------- | -------- |
-| industry         | 行业名   |
-| page             | 页数     |
-| totalpage        | 总页数   |
-| reports          | 报告数组 |
-| reports.date     | 报告日期 |
-| reports.title    | 报告标题 |
-| reports.url      | 报告链接 |
-| reports.research |          |
+| 参数             | 说明             |
+| ---------------- | ---------------- |
+| industry         | 行业名           |
+| page             | 页数             |
+| totalpage        | 总页数           |
+| reports          | 报告数组         |
+| reports.date     | 报告日期         |
+| reports.title    | 报告标题         |
+| reports.url      | 报告链接         |
+| reports.research | 报告所分析的年份 |
 
 返回样例：
 
