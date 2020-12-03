@@ -22,7 +22,7 @@
 ```
 ### 配置说明 
 
-```java
+```yaml
 eureka:
    instance:
      hostname: eurekaServer //eureka服务器端主机名

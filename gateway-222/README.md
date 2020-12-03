@@ -22,7 +22,7 @@
 ```
 ### 配置说明
 
-```java
+```yaml
 spring:
   cloud:
      gateway:
