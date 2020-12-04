@@ -1,5 +1,26 @@
 # MongoDBDesign
 
+```
+- 192.168.1.103
+    mongos 40000端口
+    shard-a 30000端口 PRI
+    shard-b 31000端口 PRI
+    config-server 27019端口
+- 192.168.1.113
+    shard-a 30000端口 SEC
+    shard-b 31000端口 SEC
+- 192.168.1.106
+    shard-a 30000端口 ARB
+    config-server 27019端口
+- 192.168.1.112
+    shard-b 31000端口 ARB
+    config-server 27019端口
+```
+
+MongoDB集群包括4个机器，两个片，每个片包括3个复制集，两个数据节点，一个仲裁节点；一个配置集群，包括3个复制集。
+
+分片的数据库是`ForeSee`，分片的集合有：`News`、`Notice`。
+
 ## 表结构
 
 ```
