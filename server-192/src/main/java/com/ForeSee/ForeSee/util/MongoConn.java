@@ -12,7 +12,7 @@ public class MongoConn {
     public static MongoClient getConn(){
         MongoClient mongoClient = null;
         try{
-            mongoClient = new MongoClient("localhost", 27017);
+            mongoClient = new MongoClient("192.168.1.103", 40000);
         }catch (Exception e){
             log.error(e.getClass().getName()+": "+e.getMessage());
         }
