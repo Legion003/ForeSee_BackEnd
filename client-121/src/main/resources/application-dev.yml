@@ -4,11 +4,5 @@ server:
   servlet:
     context-path: /ForeSee
 
-eureka:
-  client:
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8888/eureka/
-
 http:
   REST_URL_PREFIX: http://127.0.0.1:6666
