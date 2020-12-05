@@ -5,7 +5,9 @@ export CONSUMER_log=./logs/consumer.log
 
 
 case "$1" in
-
+package)
+       mvn clean install
+       echo "=======package success======";;
 start)
 
           # 启动客户端
@@ -34,9 +36,9 @@ stop)
          echo "=====stop success=====";;
 
 restart)
-        $0 stop
+        sh $0 stop
         sleep 10
-        $0 start
+        sh $0 start
         echo "===restart success==="
         ;;
 esac

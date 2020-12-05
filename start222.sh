@@ -7,7 +7,9 @@ export EUREKA_log=./logs/eurekaServer.log
 export GATEWAY_log=./logs/gateway.log
 
 case "$1" in
-
+package)
+       mvn clean install
+       echo "=======package success======";;
 start)
         ## 启动eureka
         echo "--------eureka Server开始启动--------------"
@@ -57,9 +59,9 @@ stop)
          echo "=====stop success=====";;
 
 restart)
-        $0 stop
+        sh $0 stop
         sleep 10
-        $0 start
+        sh $0 start
         echo "===restart success==="
         ;;
 esac

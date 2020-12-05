@@ -56,15 +56,15 @@ ForeSee
 
 ## 项目启动
 
-### 准备工作
-
-在本地使用IDEA进行打包，选择右侧工具栏的Maven Projects，点击根目录ForeSee的Lifecycle，进行clean和install，打包成功。
-
-### 启动顺序
-
 启动脚本有start121.sh、start222.sh和start192.sh三个。
 
 start121.sh负责启动触发端，start222.sh负责启动服务注册中心和路由网关，start192.sh负责启动微服务端。
+
+### 准备工作
+
+使用sh start192/start121/start222.sh package命令将项目的每个模块打成jar包。
+
+### 启动顺序
 
 1.在222.200.184.74使用sh start222.sh start命令启动start222.sh。
 

@@ -4,7 +4,9 @@ export PROVIDER_log=./logs/server.log
 export PROVIDER_port=8288
 
 case "$1" in
-
+package)
+       mvn clean install
+       echo "=======package success======";;
 start)
 
           ## 启动server
@@ -32,9 +34,9 @@ stop)
          echo "=====stop success=====";;
 
 restart)
-        $0 stop
+        sh $0 stop
         sleep 10
-        $0 start
+        sh $0 start
         echo "===restart success==="
         ;;
 esac
