@@ -66,8 +66,16 @@ ForeSee
 
 start121.sh负责启动触发端，start222.sh负责启动服务注册中心和路由网关，start192.sh负责启动微服务端。
 
-1.在222.200.184.74启动start222.sh。
+1.在222.200.184.74使用sh start222.sh start命令启动start222.sh。
 
-2.在192.168.1.103启动start192.sh。
+2.在192.168.1.103使用sh start192.sh start命令启动start192.sh。
 
-3.在121.46.19.26上启动start121.sh。
+3.在121.46.19.26使用sh start121.sh start命令启动start121.sh。
+
+### 关闭服务
+
+使用sh start192/start121/start222.sh stop命令关闭对应主机上的服务。
+
+### 重启服务
+
+使用sh start192/start121/start222.sh restart命令重启对应主机上的服务。
