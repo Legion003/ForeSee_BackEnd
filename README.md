@@ -6,13 +6,13 @@
 
 ```lua
 ForeSee
-├── client-222 -- 接收从前端发送过来的请求
+├── client-121 -- 接收从前端发送过来的请求
 ├── eureka-222 -- 服务注册中心
 ├── server-192 -- 微服务提供者
 ├── gateway-222 --路由转发
 ```
 
-- [client-222文档](./client-222/README.md)
+- [client-121文档](./client-121/README.md)
 
 - [eureka-222文档](./eureka-222/README.md)
 
@@ -53,3 +53,21 @@ ForeSee
 | JDK           | 1.8    | https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html |
 | Redis         | 5.0.8   | https://redis.io/download                                    |
 | MongoDB | 2.6.10 | https://www.mongodb.com/ |
+
+## 项目启动
+
+### 准备工作
+
+在本地使用IDEA进行打包，选择右侧工具栏的Maven Projects，点击根目录ForeSee的Lifecycle，进行clean和install，打包成功。
+
+### 启动顺序
+
+启动脚本有start121.sh、start222.sh和start192.sh三个。
+
+start121.sh负责启动触发端，start222.sh负责启动服务注册中心和路由网关，start192.sh负责启动微服务端。
+
+1.在222.200.184.74启动start222.sh。
+
+2.在192.168.1.103启动start192.sh。
+
+3.在121.46.19.26上启动start121.sh。

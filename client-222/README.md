@@ -430,3 +430,45 @@
 }
 ```
 
+### 配置说明
+
+主配置文件
+
+```yaml
+spring:
+  profiles:
+    active: prod  # 指定配置文件，本地测试使用dev文件，服务器部署使用prod文件
+  application:
+    name: springcloud-client # 服务名，发送请求给微服务处理的服务消费者
+```
+
+开发环境配置文件：用于本地测试
+
+```yaml
+server:
+  port: 8288 # 占用端口
+  servlet:
+    context-path: /ForeSee # 前端发送请求时需要加上/ForeSee前缀
+  # 本次测试发送请求的路径:127.0.0.1:8288/ForeSee/
+http:
+  REST_URL_PREFIX: http://127.0.0.1:6666 # 把请求转发给对应路径的路由网关
+  # 前端请求127.0.0.1:8288/ForeSee/companyInfo/300433
+  # 转发给路由网关的请求127.0.0.1:6666/companyInfo/300433
+  # 转发给微服务的请求127.0.0.1:8287/companyInfo/300433
+```
+
+生产环境配置文件：用于服务器部署
+
+```yaml
+server:
+  port: 8288 # 占用端口
+  servlet:
+    context-path: /ForeSee # 前端发送请求时需要加上/ForeSee前缀
+  # 服务器部署发送请求的路径:121.46.19.26:8288/ForeSee/
+http:
+  REST_URL_PREFIX: http://222.200.184.74:6666 # 把请求转发给对应路径的路由网关
+  # 前端请求121.46.19.26:8288/ForeSee/companyInfo/300433
+  # 转发给路由网关的请求222.200.184.125:6666/companyInfo/300433
+  # 转发给微服务的请求192.168.1.103:8288/companyInfo/300433
+```
+
